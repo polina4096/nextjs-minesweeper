@@ -3,18 +3,19 @@ import { useState, MouseEvent } from 'react';
 import './board.css';
 import _ from 'lodash';
 
+enum BaseCell {
+  Flagged    = -3,
+  Exploded   = -2,
+  Unrevealed = -1,
+}
+
+type Cell = BaseCell | number;
+
 export default function Board({ size = 9, mineDensity = 0.125 }: { size: number, mineDensity: number }) {
-  // Current board state:
-  //  -2 => exploded
-  //  -1 => unrevealed
-  // >=0 => neighbor mines
   const [board, updateBoard] = useImmer(
     Array.from({ length: size * size }, () => -1)
   );
 
-  // Mine placement:
-  // true  => mine
-  // false => clear
   const [mines, setMines] = useState(
     Array.from({ length: size * size }, () => Math.random() > mineDensity ? false : true)
   );
@@ -65,18 +66,22 @@ export default function Board({ size = 9, mineDensity = 0.125 }: { size: number,
   function onCellRightClick(e: MouseEvent, idx: number) {
     e.preventDefault();
 
-    if (board[idx] == -1) {
-      updateBoard((b: number[]) => { b[idx] = -3; });
-    } else if (board[idx] == -3) {
-      updateBoard((b: number[]) => { b[idx] = -1; });
+    if (board[idx] == BaseCell.Unrevealed) {
+      updateBoard((b: number[]) => { b[idx] = BaseCell.Flagged; });
+      return;
+    }
+    
+    if (board[idx] == BaseCell.Flagged) {
+      updateBoard((b: number[]) => { b[idx] = BaseCell.Unrevealed; });
+      return;
     }
   }
 
   function onCellClick(idx: number) {
-    if (board[idx] == -3) return;
+    if (board[idx] == BaseCell.Flagged) return;
 
     if (mines[idx]) {
-      updateBoard((b: number[]) => { b[idx] = -2; });
+      updateBoard((b: number[]) => { b[idx] = BaseCell.Exploded; });
     } else {
       revealCell(idx);
     }
