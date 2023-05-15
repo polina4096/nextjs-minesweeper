@@ -11,7 +11,7 @@ enum BaseCell {
 
 type Cell = BaseCell | number;
 
-export default function Board({ size = 9, mineDensity = 0.125 }: { size: number, mineDensity: number }) {
+export default function Board({ size = 9, mineDensity = 0.125 }) {
   const [board, updateBoard] = useImmer(
     Array.from({ length: size * size }, () => -1)
   );
