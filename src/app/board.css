@@ -1,0 +1,11 @@
+.cell {
+    margin: 4px;
+    width: 48px;
+    height: 48px;
+    font-size: 18px;
+}
+
+.flag::after {
+    color: rgb(226 232 240);
+    content: '⚑';
+}
