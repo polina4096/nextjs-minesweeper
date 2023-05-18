@@ -3,13 +3,11 @@ import { useState, MouseEvent } from 'react';
 import './board.css';
 import _ from 'lodash';
 
-enum BaseCell {
+enum Cell {
   Flagged    = -3,
   Exploded   = -2,
   Unrevealed = -1,
 }
-
-type Cell = BaseCell | number;
 
 export default function Board({ size = 9, mineDensity = 0.125 }) {
   const [board, updateBoard] = useImmer(
@@ -66,22 +64,22 @@ export default function Board({ size = 9, mineDensity = 0.125 }) {
   function onCellRightClick(e: MouseEvent, idx: number) {
     e.preventDefault();
 
-    if (board[idx] == BaseCell.Unrevealed) {
-      updateBoard((b: number[]) => { b[idx] = BaseCell.Flagged; });
+    if (board[idx] == Cell.Unrevealed) {
+      updateBoard((b: number[]) => { b[idx] = Cell.Flagged; });
       return;
     }
     
-    if (board[idx] == BaseCell.Flagged) {
-      updateBoard((b: number[]) => { b[idx] = BaseCell.Unrevealed; });
+    if (board[idx] == Cell.Flagged) {
+      updateBoard((b: number[]) => { b[idx] = Cell.Unrevealed; });
       return;
     }
   }
 
   function onCellClick(idx: number) {
-    if (board[idx] == BaseCell.Flagged) return;
+    if (board[idx] == Cell.Flagged) return;
 
     if (mines[idx]) {
-      updateBoard((b: number[]) => { b[idx] = BaseCell.Exploded; });
+      updateBoard((b: number[]) => { b[idx] = Cell.Exploded; });
     } else {
       revealCell(idx);
     }

@@ -1,0 +1,26 @@
+.menu {
+    transition: 0.15s ease-in;
+    top: 16px;
+    left: 16px;
+    position: fixed;
+    font-size: 21px;
+    width: 48px;
+    height: 48px;
+}
+
+.menu-button-hide {
+    left: -64px;
+}
+
+.menu-content {
+    transition: 0.15s ease-out;
+    top: 0;
+    left: -320px;
+    position: fixed;
+    width: 320px;
+    height: 100%;
+}
+
+.menu-content-show {
+    left: 0;
+}
